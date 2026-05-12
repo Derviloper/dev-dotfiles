@@ -2,8 +2,9 @@
   description = "NixOS configuration";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
-  outputs = { self, nixpkgs, ... }:
+  outputs = { self, nixpkgs, unstable, ... }:
     let
       system = "x86_64-linux";
     in {
@@ -13,8 +14,11 @@
         modules = [
           ./hardware-configuration.nix
 
-          ({ config, pkgs, ... }: {
-            nix.settings.experimental-features = [ "nix-command" "flakes" ];
+          ({ config, pkgs, pkgsUnstable, ... }: {
+            _module.args.pkgsUnstable = import unstable {
+              inherit (pkgs.stdenv.hostPlatform) system;
+              inherit (config.nixpkgs) config;
+            };
 
             boot.loader.grub = {
               enable = true;
@@ -118,7 +122,7 @@
             ];
 
             environment = {
-              systemPackages = with pkgs; [
+              systemPackages = with pkgsUnstable; [
                 fzf
                 zsh-powerlevel10k
                 ghostty
@@ -156,7 +160,7 @@
               ];
 
               variables = {
-                RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+                RUST_SRC_PATH = "${pkgsUnstable.rust.packages.stable.rustPlatform.rustLibSrc}";
               };
 
               etc."p10k.zsh".source = ./p10k.zsh;
@@ -167,8 +171,8 @@
               autosuggestions.enable = true;
               syntaxHighlighting.enable = true;
               interactiveShellInit = ''
-                source ${pkgs.fzf}/share/fzf/key-bindings.zsh
-                source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+                source ${pkgsUnstable.fzf}/share/fzf/key-bindings.zsh
+                source ${pkgsUnstable.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
                 if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
                   source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
                 fi
@@ -176,7 +180,7 @@
               '';
             };
 
-            users.defaultUserShell = pkgs.zsh;
+            users.defaultUserShell = pkgsUnstable.zsh;
 
             xdg.mime.defaultApplications = {
               "text/html" = "brave-browser.desktop";
@@ -186,7 +190,32 @@
               "x-scheme-handler/unknown" = "brave-browser.desktop";
             };
 
-            system.stateVersion = "25.11";
+            nix = {
+              gc = {
+                automatic = true;
+                options = "--delete-older-than 30d";
+              };
+
+              settings.experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
+
+            system = {
+              autoUpgrade = {
+                enable = true;
+                allowReboot = true;
+                flake = self.outPath;
+                flags = [
+                  "--update-input"
+                  "nixpkgs"
+                  "--no-write-lock-file"
+                ];
+              };
+
+              stateVersion = "25.11";
+            };
           })
         ];
       };
