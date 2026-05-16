@@ -10,45 +10,23 @@
     };
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager, ... }:
-    let
-      system = "x86_64-linux";
-    in {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        modules = [
-          ./hardware-configuration.nix
-          ./system
-
-          home-manager.nixosModules.home-manager
-
-          ({ config, pkgs, pkgsUnstable, ... }: {
-            _module.args.pkgsUnstable = import unstable {
-              inherit (pkgs.stdenv.hostPlatform) system;
-              inherit (config.nixpkgs) config;
-            };
-
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit pkgsUnstable; };
-              users.daniel-da-silva = import ./home;
-              backupFileExtension = "hm-backup";
-            };
-
-            system.autoUpgrade = {
-              enable = true;
-              allowReboot = true;
-              flake = self.outPath;
-              flags = [
-                "--update-input"
-                "nixpkgs"
-                "--no-write-lock-file"
-              ];
-            };
-          })
-        ];
-      };
+  outputs =
+    inputs@{ nixpkgs, unstable, ... }:
+    {
+      nixosConfigurations = builtins.mapAttrs (
+        hostname: _:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/${hostname}
+            (
+              { pkgs, ... }:
+              {
+                _module.args.pkgsUnstable = import unstable { inherit (pkgs) system config; };
+              }
+            )
+          ];
+        }
+      ) (nixpkgs.lib.filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
     };
 }
