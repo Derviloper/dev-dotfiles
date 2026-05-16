@@ -108,6 +108,7 @@
 
   environment = {
     systemPackages = with pkgsUnstable; [
+      btop
       gcc
 
       (symlinkJoin {
