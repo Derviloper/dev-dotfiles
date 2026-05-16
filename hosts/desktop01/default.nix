@@ -14,6 +14,27 @@ in
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  systemd.services.checkout-dotfiles = {
+    description = "Clone dotfiles repository";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = username;
+      Group = "users";
+    };
+
+    path = [ pkgs.git pkgs.openssh ];
+
+    script = ''
+      if [ ! -d /home/${username}/dotfiles/.git ]; then
+        git clone https://github.com/Derviloper/dev-dotfiles /home/${username}/dotfiles
+      fi
+    '';
+  };
+
   networking = {
     hostName = hostname;
     nftables.enable = true;
@@ -72,6 +93,7 @@ in
       fzf
       ghostty
       nixfmt
+      sxhkd
       vscode
       zsh
       zsh-powerlevel10k

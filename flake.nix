@@ -20,9 +20,12 @@
           modules = [
             ./hosts/${hostname}
             (
-              { pkgs, ... }:
+              { pkgs, config, ... }:
               {
-                _module.args.pkgsUnstable = import unstable { inherit (pkgs) system config; };
+                _module.args.pkgsUnstable = import unstable {
+                  inherit (pkgs.stdenv.hostPlatform) system;
+                  inherit (config.nixpkgs) config;
+                };
               }
             )
           ];
