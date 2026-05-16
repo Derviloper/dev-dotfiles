@@ -86,7 +86,7 @@
   fileSystems."/mnt/hgfs" = {
     device = ".host:/";
     fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
-    options = [ "umask=22" "uid=1000" "gid=100" "allow_other" "defaults" "auto_unmount" ];
+    options = [ "umask=022" "uid=1000" "gid=100" "allow_other" "defaults" "auto_unmount" ];
   };
 
   programs = {
@@ -108,6 +108,7 @@
 
   environment = {
     systemPackages = with pkgsUnstable; [
+      nixfmt
       btop
       gcc
 
