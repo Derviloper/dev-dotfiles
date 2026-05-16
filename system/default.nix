@@ -93,6 +93,7 @@
     dconf.enable = true;
     fuse.enable = true;
     git.enable = true;
+    ssh.startAgent = true;
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
