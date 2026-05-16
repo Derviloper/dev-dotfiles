@@ -103,6 +103,7 @@ in
   users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    initialHashedPassword = "";
   };
   home-manager = {
     useGlobalPkgs = true;
