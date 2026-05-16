@@ -1,4 +1,4 @@
-{ username, ... }:
+{ username, config, ... }:
 {
   programs = {
     home-manager.enable = true;
