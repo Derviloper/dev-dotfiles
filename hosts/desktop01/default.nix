@@ -2,6 +2,7 @@
   inputs,
   pkgs,
   pkgsUnstable,
+  hostname,
   ...
 }:
 let
@@ -14,6 +15,7 @@ in
   ];
 
   networking = {
+    hostName = hostname;
     nftables.enable = true;
     firewall.allowedTCPPorts = [
       22

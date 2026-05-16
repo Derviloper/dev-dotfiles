@@ -16,7 +16,7 @@
       nixosConfigurations = builtins.mapAttrs (
         hostname: _:
         nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs hostname; };
           modules = [
             ./hosts/${hostname}
             (
