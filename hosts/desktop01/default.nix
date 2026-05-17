@@ -7,6 +7,8 @@
 }:
 let
   username = "derviloper";
+  homeDirectory = "/home/${username}";
+  dotfiles = "${homeDirectory}/Projects/dotfiles";
 in
 {
   imports = [
@@ -26,11 +28,15 @@ in
       Group = "users";
     };
 
-    path = [ pkgs.git pkgs.openssh ];
+    path = [
+      pkgs.git
+      pkgs.openssh
+    ];
 
     script = ''
-      if [ ! -d /home/${username}/dotfiles/.git ]; then
-        git clone https://github.com/Derviloper/dev-dotfiles /home/${username}/dotfiles
+      if [ ! -d ${dotfiles}/.git ]; then
+        mkdir -p ${dotfiles}
+        git clone https://github.com/Derviloper/dev-dotfiles ${dotfiles}
       fi
     '';
   };
@@ -130,7 +136,15 @@ in
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit inputs pkgsUnstable username; };
+    extraSpecialArgs = {
+      inherit
+        inputs
+        pkgsUnstable
+        username
+        homeDirectory
+        dotfiles
+        ;
+    };
     users.${username} = ./home.nix;
   };
 
