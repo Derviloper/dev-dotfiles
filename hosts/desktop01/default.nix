@@ -148,11 +148,12 @@ in
     users.${username} = ./home.nix;
   };
 
-  nixpkgs.config.allowUnfree = true;
-  boot.loader.grub = {
-    device = "/dev/sda";
-    useOSProber = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
+
+  nixpkgs.config.allowUnfree = true;
   system = {
     autoUpgrade = {
       enable = true;

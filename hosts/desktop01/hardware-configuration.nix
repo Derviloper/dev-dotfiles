@@ -30,6 +30,12 @@
     fsType = "ext4";
   };
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/boot";
+    fsType = "vfat";
+    options = [ "umask=0077" ];
+  };
+
   fileSystems."/mnt/hgfs" = {
     device = ".host:/";
     fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
