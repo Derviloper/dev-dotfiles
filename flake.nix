@@ -11,24 +11,15 @@
   };
 
   outputs =
-    inputs@{ nixpkgs, unstable, ... }:
+    inputs@{ nixpkgs, ... }:
     {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+
       nixosConfigurations = builtins.mapAttrs (
         hostname: _:
         nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs hostname; };
-          modules = [
-            ./hosts/${hostname}
-            (
-              { pkgs, config, ... }:
-              {
-                _module.args.pkgsUnstable = import unstable {
-                  inherit (pkgs.stdenv.hostPlatform) system;
-                  inherit (config.nixpkgs) config;
-                };
-              }
-            )
-          ];
+          modules = [ ./hosts/${hostname} ];
         }
       ) (nixpkgs.lib.filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
     };

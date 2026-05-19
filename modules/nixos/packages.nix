@@ -1,13 +1,9 @@
-{ pkgsUnstable, ... }:
+{ pkgs, ... }:
 {
-  environment.systemPackages = with pkgsUnstable; [
-    brave
-    btop
+  environment.systemPackages = with pkgs.unstable; [
     fzf
-    ghostty
     nixfmt
     sxhkd
-    vscode
     zsh
     zsh-powerlevel10k
     libsecret

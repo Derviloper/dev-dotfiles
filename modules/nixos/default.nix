@@ -8,10 +8,11 @@
     ./locale.nix
     ./networking.nix
     ./nix-settings.nix
+    ./openssh.nix
     ./packages.nix
     ./programs.nix
     ./security.nix
     ./shell.nix
-    ./virtualisation.nix
+    ./unstable-overlay.nix
   ];
 }

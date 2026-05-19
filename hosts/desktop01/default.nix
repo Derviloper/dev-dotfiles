@@ -1,6 +1,5 @@
 {
   inputs,
-  pkgsUnstable,
   hostname,
   ...
 }:
@@ -12,6 +11,7 @@ in
 {
   imports = [
     ./hardware.nix
+    ./vmware-guest.nix
     ../../modules/nixos
     inputs.home-manager.nixosModules.home-manager
   ];
@@ -32,7 +32,6 @@ in
     extraSpecialArgs = {
       inherit
         inputs
-        pkgsUnstable
         username
         homeDirectory
         dotfiles

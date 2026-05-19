@@ -2,12 +2,12 @@
 {
   system.autoUpgrade = {
     enable = true;
-    allowReboot = true;
     flake = inputs.self.outPath;
     flags = [
-      "--update-input"
-      "nixpkgs"
       "--no-write-lock-file"
+      "-L"
     ];
+    dates = "weekly";
+    randomizedDelaySec = "45min";
   };
 }

@@ -1,9 +1,6 @@
 {
   security = {
     sudo.wheelNeedsPassword = false;
-    pam.services = {
-      login.enableGnomeKeyring = true;
-      lightdm.enableGnomeKeyring = true;
-    };
+    pam.services.lightdm.enableGnomeKeyring = true;
   };
 }
