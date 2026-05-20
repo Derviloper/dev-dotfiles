@@ -5,6 +5,7 @@
   ...
 }:
 {
+  # Needed for symlinked files
   systemd.services.checkout-dotfiles = {
     description = "Clone dotfiles repository";
     wantedBy = [ "multi-user.target" ];

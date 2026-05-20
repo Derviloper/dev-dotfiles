@@ -12,7 +12,7 @@
     ./packages.nix
     ./programs.nix
     ./security.nix
-    ./shell.nix
+    ./shell
     ./unstable-overlay.nix
   ];
 }
