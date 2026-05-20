@@ -5,29 +5,11 @@
   ...
 }:
 {
-  # Needed for symlinked files
-  systemd.services.checkout-dotfiles = {
-    description = "Clone dotfiles repository";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-
-    unitConfig.ConditionPathExists = "!${dotfiles}/.git";
-
-    serviceConfig = {
-      Type = "oneshot";
-      User = username;
-      Group = "users";
-    };
-
-    path = [
-      pkgs.git
-      pkgs.openssh
-    ];
-
-    script = ''
+  system.activationScripts.checkoutDotfiles.text = ''
+    if [ ! -d ${dotfiles}/.git ]; then
       mkdir -p ${dotfiles}
-      git clone https://github.com/Derviloper/dev-dotfiles ${dotfiles}
-    '';
-  };
+      ${pkgs.git}/bin/git clone https://github.com/Derviloper/dev-dotfiles ${dotfiles}
+      chown -R ${username}:users ${dotfiles}
+    fi
+  '';
 }
