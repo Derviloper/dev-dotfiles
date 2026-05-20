@@ -19,6 +19,7 @@ in
   _module.args = { inherit username homeDirectory dotfiles; };
 
   networking.hostName = hostname;
+  system.stateVersion = "25.11";
 
   users.users.${username} = {
     isNormalUser = true;

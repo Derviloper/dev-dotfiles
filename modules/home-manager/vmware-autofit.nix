@@ -18,10 +18,13 @@
           ];
           text = ''
             apply_if_needed() {
-              local query current preferred
-              query=$(xrandr --query)
-              current=$(echo "$query" | awk '/^Virtual-1/{f=1; next} /^[A-Za-z]/{f=0} f && /\*/ {print $1; exit}')
-              preferred=$(echo "$query" | awk '/^Virtual-1/{f=1; next} /^[A-Za-z]/{f=0} f && /\+/ {print $1; exit}')
+              local current preferred
+              read -r current preferred < <(xrandr --query | awk '
+                /^[^[:space:]]/ { in_section = ($1 == "Virtual-1"); next }
+                in_section && !c && index($0, "*") { c = $1 }
+                in_section && !p && index($0, "+") { p = $1 }
+                END { print c, p }
+              ')
               if [ -n "$preferred" ] && [ "$current" != "$preferred" ]; then
                 xrandr --output Virtual-1 --preferred
               fi

@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  # Done here and not in home-manager because it should also be used in root user
   programs.zsh = {
     enable = true;
     autosuggestions.enable = true;

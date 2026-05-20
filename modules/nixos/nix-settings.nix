@@ -19,6 +19,4 @@
 
     optimise.automatic = true;
   };
-
-  system.stateVersion = "25.11";
 }

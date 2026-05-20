@@ -12,6 +12,8 @@
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
 
+    unitConfig.ConditionPathExists = "!${dotfiles}/.git";
+
     serviceConfig = {
       Type = "oneshot";
       User = username;
@@ -24,10 +26,8 @@
     ];
 
     script = ''
-      if [ ! -d ${dotfiles}/.git ]; then
-        mkdir -p ${dotfiles}
-        git clone https://github.com/Derviloper/dev-dotfiles ${dotfiles}
-      fi
+      mkdir -p ${dotfiles}
+      git clone https://github.com/Derviloper/dev-dotfiles ${dotfiles}
     '';
   };
 }
