@@ -11,8 +11,10 @@ in
 {
   imports = [
     ./hardware.nix
+    ./disko.nix
     ./vmware-guest.nix
     ../../modules/nixos
+    inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
   ];
 
