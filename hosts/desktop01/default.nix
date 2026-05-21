@@ -25,7 +25,7 @@ in
 
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "pipewire" ];
     initialHashedPassword = "";
   };
 
