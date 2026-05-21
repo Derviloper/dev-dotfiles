@@ -13,6 +13,7 @@
     ./programs.nix
     ./security.nix
     ./shell
+    ./sound.nix
     ./unstable-overlay.nix
   ];
 }
