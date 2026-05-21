@@ -5,7 +5,7 @@
   ...
 }:
 {
-  home.activation.seedVscodeArgv = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.seedBravePreferences = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     target="${homeDirectory}/.config/BraveSoftware/Brave-Browser/Default/Preferences"
     source=${lib.escapeShellArg (
       pkgs.writeText "Preferences" ''
