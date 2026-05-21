@@ -17,9 +17,12 @@ Partitioning is declarative via [disko](https://github.com/nix-community/disko)
 
 ```sh
 sudo nix --experimental-features 'nix-command flakes' run \
-  github:nix-community/disko/latest#disko-install -- \
-  --flake github:Derviloper/dev-dotfiles#desktop01 \
-  --disk main /dev/sda
+  github:nix-community/disko/latest -- \
+  --mode destroy,format,mount \
+  --flake github:Derviloper/dev-dotfiles#desktop01
+
+sudo nixos-install --no-root-passwd \
+  --flake github:Derviloper/dev-dotfiles#desktop01
 
 reboot
 ```
