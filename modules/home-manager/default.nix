@@ -1,6 +1,7 @@
 {
   imports = [
     ./brave.nix
+    ./bspwm
     ./ghostty.nix
     ./git.nix
     ./packages.nix
