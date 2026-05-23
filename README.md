@@ -12,14 +12,15 @@ NixOS + home-manager configuration, organised as a flake.
 
 ## VM Setup
 
-Partitioning is declarative via [disko](https://github.com/nix-community/disko)
-— layout lives in `hosts/desktop01/disko.nix`. From the NixOS installer:
-
 ```sh
 sudo nix --experimental-features 'nix-command flakes' run \
   github:nix-community/disko/latest -- \
   --mode destroy,format,mount \
   --flake github:Derviloper/dev-dotfiles#desktop01
+
+sudo mkdir -p /mnt/var/lib/sops/age
+sudo nano /mnt/var/lib/sops/age/keys.txt
+sudo chmod 600 /mnt/var/lib/sops/age/keys.txt
 
 sudo nixos-install --no-root-passwd \
   --flake github:Derviloper/dev-dotfiles#desktop01
@@ -59,6 +60,24 @@ ssh -L 5173:localhost:5173 derviloper@<vm-ip>
 
 Then open `http://localhost:5173` on the host. Add more `-L PORT:localhost:PORT`
 flags for additional ports.
+
+## Secrets
+
+Secrets are encrypted in-repo with [sops](https://github.com/getsops/sops) and
+decrypted on-host by [sops-nix](https://github.com/Mic92/sops-nix). One personal
+age keypair unlocks every VM.
+
+### Adding or editing secrets
+
+From any machine with the age key at `/var/lib/sops/age/keys.txt` (or
+`~/.config/sops/age/keys.txt`):
+
+```sh
+sops secrets/secrets.yaml
+```
+
+Then declare the new entry under `sops.secrets.<name>` in
+`modules/nixos/sops.nix` (set `owner`, `mode`, `path`), rebuild, commit, push.
 
 ## Formatting
 

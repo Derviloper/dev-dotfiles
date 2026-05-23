@@ -4,3 +4,5 @@ result-*
 .envrc.local
 *.swp
 .DS_Store
+*.dec.yaml
+keys.txt
