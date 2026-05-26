@@ -16,6 +16,7 @@
     after = [
       "network-online.target"
       "local-fs.target"
+      "sops-install-secrets.service"
     ];
     wants = [ "network-online.target" ];
     before = [
@@ -27,12 +28,9 @@
       Type = "oneshot";
       User = username;
       Group = "users";
-      Environment = [
-        "GIT_SSL_CAINFO=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
-        "HOME=${homeDirectory}"
-      ];
+      Environment = [ "HOME=${homeDirectory}" ];
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${dotfiles}";
-      ExecStart = "${pkgs.git}/bin/git clone https://github.com/Derviloper/dev-dotfiles ${dotfiles}";
+      ExecStart = "${pkgs.git}/bin/git clone git@github.com:Derviloper/dev-dotfiles.git ${dotfiles}";
     };
   };
 }
