@@ -1,8 +1,8 @@
 bspwm:
-	bspc wm -r
+	watchexec -w modules/home-manager/bspwm -- bspc wm -r
 
 eww:
-	eww reload
+	watchexec -w modules/home-manager/eww -- eww reload
 
 sxhkd:
-	watchexec -w modules/home-manager/sxhkd/sxhkdrc -- pkill -USR1 -x sxhkd
+	watchexec -w modules/home-manager/sxhkd -- pkill -USR1 -x sxhkd
