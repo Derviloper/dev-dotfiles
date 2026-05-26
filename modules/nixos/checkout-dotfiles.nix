@@ -28,7 +28,10 @@
       Type = "oneshot";
       User = username;
       Group = "users";
-      Environment = [ "HOME=${homeDirectory}" ];
+      Environment = [
+        "HOME=${homeDirectory}"
+        "GIT_SSH=${pkgs.openssh}/bin/ssh"
+      ];
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${dotfiles}";
       ExecStart = "${pkgs.git}/bin/git clone git@github.com:Derviloper/dev-dotfiles.git ${dotfiles}";
     };
