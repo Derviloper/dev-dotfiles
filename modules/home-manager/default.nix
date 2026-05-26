@@ -2,6 +2,7 @@
   imports = [
     ./brave.nix
     ./bspwm
+    ./eww
     ./ghostty.nix
     ./git.nix
     ./packages.nix
