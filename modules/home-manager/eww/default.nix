@@ -1,6 +1,11 @@
-{ config, pkgs, dotfiles, ... }:
 {
-  home.packages = [ pkgs.eww ];
+  config,
+  pkgs,
+  dotfiles,
+  ...
+}:
+{
+  home.packages = [ pkgs.unstable.eww ];
 
   xdg.configFile."eww/eww.yuck".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/modules/home-manager/eww/eww.yuck";

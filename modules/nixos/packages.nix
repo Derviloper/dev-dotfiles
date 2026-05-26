@@ -7,6 +7,7 @@
     gnumake
     libsecret
     nixfmt
+    rustup
     sxhkd
     watchexec
     zsh

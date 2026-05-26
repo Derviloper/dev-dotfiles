@@ -7,6 +7,7 @@
     ./fonts.nix
     ./locale.nix
     ./networking.nix
+    ./nix-ld.nix
     ./nix-settings.nix
     ./openssh.nix
     ./packages.nix
