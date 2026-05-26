@@ -6,8 +6,6 @@
         name = "Derviloper";
         email = "derviloper@gmx.de";
       };
-      init.defaultBranch = "main";
-      pull.rebase = true;
     };
   };
 }
