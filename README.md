@@ -21,6 +21,11 @@ sudo nix --experimental-features 'nix-command flakes' run \
   --mode destroy,format,mount \
   --flake github:Derviloper/dev-dotfiles#desktop01
 
+# Place the canonical SSH host keypair so sops-nix can decrypt at activation.
+sudo install -d -m 755 /mnt/etc/ssh
+sudo install -m 600 ssh_host_ed25519_key      /mnt/etc/ssh/ssh_host_ed25519_key
+sudo install -m 644 ssh_host_ed25519_key.pub  /mnt/etc/ssh/ssh_host_ed25519_key.pub
+
 sudo nixos-install --no-root-passwd \
   --flake github:Derviloper/dev-dotfiles#desktop01
 
@@ -59,6 +64,34 @@ ssh -L 5173:localhost:5173 derviloper@<vm-ip>
 
 Then open `http://localhost:5173` on the host. Add more `-L PORT:localhost:PORT`
 flags for additional ports.
+
+## Secrets
+
+Secrets live encrypted in `secrets/` via [sops](https://github.com/getsops/sops)
+
+- [sops-nix](https://github.com/Mic92/sops-nix). The recipient is the host's
+  own `/etc/ssh/ssh_host_ed25519_key` — sops-nix converts it to an age identity
+  at activation.
+
+`SOPS_AGE_KEY_CMD` is set system-wide (runs `ssh-to-age` against the host SSH
+key):
+
+```sh
+sops secrets/secrets.yaml
+```
+
+Adding a secret:
+
+1. `sops secrets/secrets.yaml` — add the key.
+2. Declare it under `sops.secrets.<name>` in `modules/nixos/sops.nix` with
+   `owner`, `mode`, `path`.
+3. `sudo nixos-rebuild switch --flake .#desktop01`.
+
+The age recipient in `.sops.yaml` is derived from the host's SSH pubkey:
+
+```sh
+ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
+```
 
 ## Formatting
 
