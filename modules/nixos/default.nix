@@ -4,6 +4,7 @@
     ./boot.nix
     ./checkout-dotfiles.nix
     ./desktop.nix
+    ./file-manager.nix
     ./fonts.nix
     ./locale.nix
     ./networking.nix

@@ -7,6 +7,13 @@ super + c
 super + b
     brave
 
+super + e
+    thunar
+
+# close and kill
+super + {_,shift + }q
+	bspc node -{c,k}
+
 # set the window state
 super + {t,f}
 	bspc node -t {tiled,fullscreen}
