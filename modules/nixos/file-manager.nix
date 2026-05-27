@@ -7,4 +7,5 @@
       thunar-volman
     ];
   };
+  services.gvfs.enable = true;
 }
