@@ -10,6 +10,7 @@
     ./networking.nix
     ./nix-ld.nix
     ./nix-settings.nix
+    ./nvm.nix
     ./openssh.nix
     ./packages.nix
     ./programs.nix
