@@ -1,4 +1,4 @@
-(defpoll time :interval "1s"
+(defpoll time :interval "200ms"
   "date '+%a %d %b  %H:%M:%S'")
 
 (defpoll cpu :interval "2s"
